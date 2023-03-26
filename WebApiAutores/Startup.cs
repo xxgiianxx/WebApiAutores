@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using WebApiAutores.Controllers;
 using WebApiAutores.Filtros;
 using WebApiAutores.Middlewares;
-using WebApiAutores.Servicios;
+
 
 namespace WebApiAutores
 {
@@ -33,22 +33,10 @@ namespace WebApiAutores
             //services.AddTransient<ServicioA>();
 
             //el tiempo de vida de la clase aumenta devuelve la misma instancia :ejemplo applicatcionDbContext permite trabajar con lo mismo datos
-            services.AddTransient<IServicio, ServicioA>();
 
-            services.AddTransient<ServicioTransient>();
-            services.AddScoped<ServicioScoped>();
-            services.AddSingleton<ServicioSingleton>();
-            services.AddTransient<MiFiltroDeAccion>();
-            services.AddHostedService<EscribirEnArchivo>();
-
-            services.AddResponseCaching();//Permite usar cache
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();//Authenticacion
             //singleton permite trabajar con data en memoria devuelve la misma data compartida entre todos
-
-
-
-
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer( Configuration.GetConnectionString("defaultConnection")));
             services.AddSwaggerGen(c =>
@@ -61,21 +49,7 @@ namespace WebApiAutores
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,ILogger<Startup> logger)
         {
 
-            //app.UseMiddleware<LoguearRespuestaHTTPMiddleware>();
-
             app.UseLoguearRespuestaHTTP();
-
-            app.Map("/ruta1", app =>
-            {
-                
-                app.Run(async contexto =>
-                {
-                    await contexto.Response.WriteAsync("Estoy interceptando la tuberia");
-                });
-
-            });
-
-
 
             if (env.IsDevelopment())
             {
@@ -83,9 +57,7 @@ namespace WebApiAutores
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseResponseCaching();
 
             app.UseAuthorization();
 

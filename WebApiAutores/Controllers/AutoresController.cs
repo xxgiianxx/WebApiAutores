@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiAutores.Entidades;
 using WebApiAutores.Filtros;
-using WebApiAutores.Servicios;
 
 namespace WebApiAutores.Controllers
 {
@@ -19,11 +18,11 @@ namespace WebApiAutores.Controllers
             this.context = context;
         }
 
-        [HttpGet] //api//autores
-        public async Task<ActionResult<List<Autor>>> Get()
-        {
-            return await context.Autores.Include(x => x.Libros).ToListAsync();
-        }
+        //[HttpGet] //api//autores
+        //public async Task<ActionResult<List<Autor>>> Get()
+        //{
+        //    return await context.Autores.Include(x => x.Libros).ToListAsync();
+        //}
 
  
         [HttpGet("{id:int}")]
